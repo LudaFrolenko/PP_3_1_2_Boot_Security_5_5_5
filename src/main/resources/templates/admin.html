@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>ADMIN</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        form {
+            display: inline;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+<h2>ТАБЛИЦА</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>№</th>
+        <th>ИМЯ</th>
+        <th>ФАМИЛИЯ</th>
+        <th>ПОЧТА</th>
+        <th>ЛОГИН</th>
+        <th>ПАРОЛЬ</th>
+        <th>РОЛЬ</th>
+        <th>ДЕЙСТВИЯ</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.password}"></td>
+        <td th:text="${user.getUserRole()}"></td>
+        <td class="actions">
+            <form th:method="GET" th:action="@{/admin/{id}/update(id=${user.id})}">
+                <input type="submit" value="РЕДАКТИРОВАТЬ"/>
+            </form>
+            <form th:method="POST" th:action="@{/admin/{id}(id=${user.id})}">
+                <input type="hidden" name="_method" value="DELETE"/>
+                <input type="submit" value="УДАЛИТЬ"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div style="margin-top: 20px;">
+    <form th:method="GET" th:action="@{/admin/new}">
+        <input type="submit" value="ДОБАВИТЬ ПОЛЬЗОВАТЕЛЯ"/>
+    </form>
+    <form th:method="GET" th:action="@{/user}" style="margin-left: 10px;">
+        <input type="submit" value="МОЯ СТРАНИЦА"/>
+    </form>
+</div>
+
+<div style="margin-top: 20px;">
+    <a th:href="@{/logout}"><input type="button" value="ВЫХОД"/></a>
+</div>
+</body>
+</html>
